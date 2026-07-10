@@ -24,7 +24,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from clickpipes_operator import (
+from utils.ClickPipes_Operator.clickpipes_operator import (
     ClickPipeOperator,
     HIGH_INITIAL_LOAD_PARALLELISM,
     INITIAL_LOAD_CPU_MILLICORES,
