@@ -1,0 +1,9 @@
+# uv / virtualenv
+.venv/
+
+# Secrets — real credentials live here, never commit
+.env
+
+# Python
+__pycache__/
+*.py[cod]
