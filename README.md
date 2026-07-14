@@ -29,8 +29,9 @@ clickhouse-misc/
 ├── utils/
 │   └── ClickPipes_Operator/   # each subfolder is an independent, shareable snippet
 └── examples/
-    ├── ClickPipes_Multiplexing/     # fan-in: anonymize per-tenant data into one service
-    └── ClickPipes_Demultiplexing/   # fan-out: split a multiplexed service per tenant
+    └── ClickPipes_Examples/             # cross-service ClickPipes patterns
+        ├── ClickPipes_Multiplexing/     # fan-in: anonymize per-tenant data into one service
+        └── ClickPipes_Demultiplexing/   # fan-out: split a multiplexed service per tenant
 ```
 
 Standalone runnable snippets (Python, uv-based) live under [`utils/`](utils/);
@@ -48,16 +49,18 @@ copy-paste DDL walkthroughs live under [`examples/`](examples/).
 
 ### Examples (DDL walkthroughs)
 
-Cross-service data-movement patterns for ClickHouse Cloud multi-tenant workloads.
-Each uses an incremental materialized view feeding a `remoteSecure`-backed proxy
-table, so movement is continuous with **no external orchestrator**. Every case ships
-DDL split by role — `01_..._receiving_service.sql` (run first) and
-`02_..._sender_service.sql` — including the users and role grants for the remote actions.
+Cross-service data-movement patterns for ClickHouse Cloud multi-tenant workloads, under
+[`examples/ClickPipes_Examples/`](examples/ClickPipes_Examples/). Each uses an incremental
+materialized view feeding a `remoteSecure`-backed proxy table, so movement is continuous
+with **no external orchestrator**. Every case ships DDL split by role —
+`01_..._receiving_service.sql` (run first) and `02_..._sender_service.sql` — including the
+users and role grants for the remote actions. See the
+[ClickPipes Examples README](examples/ClickPipes_Examples/) for the high-level overview.
 
 | Example | What it does |
 | --- | --- |
-| [ClickPipes Multiplexing](examples/ClickPipes_Multiplexing/) | **Fan-in.** Many isolated per-tenant services anonymize their data (PII dropped on the sender) and push it into one consolidated `ReplacingMergeTree` keyed on original id + tenant id. The consolidated service never receives PII. |
-| [ClickPipes Demultiplexing](examples/ClickPipes_Demultiplexing/) | **Fan-out.** One multiplexed service (cheaper ingestion) routes each tenant's slice to that tenant's own service, filtering on and dropping `tenant_id` before writing. |
+| [ClickPipes Multiplexing](examples/ClickPipes_Examples/ClickPipes_Multiplexing/) | **Fan-in.** Many isolated per-tenant services anonymize their data (PII dropped on the sender) and push it into one consolidated `ReplacingMergeTree` keyed on original id + tenant id. The consolidated service never receives PII. |
+| [ClickPipes Demultiplexing](examples/ClickPipes_Examples/ClickPipes_Demultiplexing/) | **Fan-out.** One multiplexed service (cheaper ingestion) routes each tenant's slice to that tenant's own service, filtering on and dropping `tenant_id` before writing. |
 
 ---
 
